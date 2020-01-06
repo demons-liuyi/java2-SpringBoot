@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head xmlns:th="http://www.thymeleaf.org">
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div id="ctx">
+	<a href="toAdd">新增</a>
+		<span>学生查询：</span>
+		<table>
+			<thead>
+				<tr>
+					<td>编号</td>
+					<td>姓名</td>
+					<td>班级</td>
+					<td>专业编号</td>
+					<td>操作</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr v-for="item in page.list">
+					<td>{{item.sid}}</td>
+					<td>{{item.sname}}</td>
+					<td>{{item.classname}}</td>
+					<td>{{item.mid}}</td>
+					<td><a :href="'/stu/toUpdate?sid='+item.sid">修改</a><span @click="remove(item.sid)">删除</span></td>
+				</tr>
+			</tbody>
+		</table>
+		<div>
+			<span @click="query(2,1)">首页</span><span
+				@click="query(2,page.prePage)">上一页</span><span
+				@click="query(2,page.nextPage)">下一页</span><span @click="query(2,page.lastPage)">尾页</span>
+		</div>
+	</div>
+	<script type="text/javascript" th:src="@{/js/jquery-1.12.4.js}"></script>
+	<script type="text/javascript" th:src="@{/js/vue.js}"></script>
+	<script type="text/javascript">
+		var vm=new Vue({
+			el:"#ctx",
+			data(){
+				return {
+					page:{}						
+				}					
+			},methods:{
+				remove:function(sid){
+					console.log(sid);
+					$.ajax({
+						url:"[[@{deleteStudent}]]",
+						data:{sid:sid},
+						type:"post",						 
+						success:function(result){
+							console.log(result);	
+							vm.query(2,vm.page.pageNum);
+						},error:function(result){				
+							console.log(result);
+							 
+						}						
+					});
+				},
+				query:function(pageSize,pageNum){
+					$.ajax({
+						url:"[[@{pageInfo}]]",
+						data:{pageSize:pageSize,pageNum:pageNum},
+						type:"post",						 
+						success:function(result){
+							console.log(result);	
+							vm.page=result;
+						},error:function(result){				
+							console.log(result);
+						}		
+					});			
+				}	
+			},created:function(){
+				console.log(123);
+				this.query(2,1);
+			}
+		});		 
+		</script>
+</body>
+</html>
