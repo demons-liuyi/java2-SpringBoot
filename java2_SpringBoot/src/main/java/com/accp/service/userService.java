@@ -16,7 +16,7 @@ public class userService {
 	@Autowired
 	UserMapper um;
 	
-	
+	//添加了一行注释
 	public User findUser(String username,String password) {
 			UserExample ex=new UserExample();
 			ex.createCriteria().andUsernameEqualTo(username).andPasswordEqualTo(password);
