@@ -29,7 +29,7 @@ public class indexController {
 		System.out.println(list);
 		return list;
 	}
-	
+	//注释信息
 	@RequestMapping("/qwe")
 	public String qwe() {
 		System.out.println("111");
